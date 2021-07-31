@@ -109,12 +109,7 @@ export default function ModalCreate() {
               </FormControl>
               <FormControl display="flex" alignItems="center">
                 <FormLabel htmlFor="active">Ativar imóvel?</FormLabel>
-                <Switch
-                  id="active"
-                  defaultChecked="true"
-                  size="lg"
-                  {...register('active')}
-                />
+                <Switch id="active" size="lg" {...register('active')} />
               </FormControl>
             </Stack>
           </ModalBody>
