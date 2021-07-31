@@ -69,11 +69,11 @@ export default function Users(req, res) {
   } else if (req.method === 'POST') {
     createPropertie(req.body)
       .then((response) => {
-        console.log(response)
         const data = {
           propertie_id: response.ref.id,
           name: response.data.name,
           description: response.data.description,
+          active: response.data.active,
           message: 'Imóvel adicionado com sucesso!',
         }
         res.status(200).json({ ...data })

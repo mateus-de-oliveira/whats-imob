@@ -18,6 +18,7 @@ import {
   useToast,
   Stack,
   Button,
+  Switch,
 } from '@chakra-ui/react'
 
 import propertiesApi from '../../Services/Api/properties'
@@ -54,6 +55,7 @@ export default function ModalCreate() {
           if (propertie.propertie_id === propertieSelected.propertie_id) {
             propertie.name = data.name
             propertie.description = data.description
+            propertie.active = data.active
           }
 
           return propertie
@@ -103,6 +105,15 @@ export default function ModalCreate() {
                 <Textarea
                   placeholder="Digite uma descrição para o imóvel"
                   {...register('description')}
+                />
+              </FormControl>
+              <FormControl display="flex" alignItems="center">
+                <FormLabel htmlFor="active">Ativar imóvel?</FormLabel>
+                <Switch
+                  id="active"
+                  defaultChecked="true"
+                  size="lg"
+                  {...register('active')}
                 />
               </FormControl>
             </Stack>
