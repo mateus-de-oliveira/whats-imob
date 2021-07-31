@@ -56,7 +56,7 @@ export default function TableView() {
                 <Tbody>
                   {properties.map((propertie) => {
                     return (
-                      <Tr>
+                      <Tr key={propertie.propertie_id}>
                         <Td>{propertie.name}</Td>
                         <Td>
                           <Badge colorScheme="green">Ativo</Badge>

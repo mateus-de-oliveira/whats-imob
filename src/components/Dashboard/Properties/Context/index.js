@@ -13,10 +13,6 @@ export const PropertiesProvider = ({ children }) => {
   const [propertieSelected, setPropertieSelected] = useState({})
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false)
 
-  useEffect(() => {
-    console.log(propertieSelected)
-  }, [propertieSelected])
-
   const {
     onClose: onCloseModalCreate,
     onOpen: onOpenModalCreate,
