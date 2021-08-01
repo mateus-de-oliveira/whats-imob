@@ -26,8 +26,3 @@ let createImovel = client.query(
     data: imovel,
   }),
 )
-
-//createUser.then((response) => console.log(response))
-createImovel
-  .then((response) => console.log(response))
-  .catch((error) => console.log(error))

@@ -59,7 +59,11 @@ export default function TableView() {
                       <Tr key={propertie.propertie_id}>
                         <Td>{propertie.name}</Td>
                         <Td>
-                          <Badge colorScheme="green">Ativo</Badge>
+                          {propertie.active === true ? (
+                            <Badge colorScheme="green">Ativo</Badge>
+                          ) : (
+                            <Badge colorScheme="red">Inativo</Badge>
+                          )}
                         </Td>
                         <Td>
                           <Stack spacing={3} direction="row">
