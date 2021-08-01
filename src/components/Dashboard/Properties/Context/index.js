@@ -9,9 +9,15 @@ export const usePropertiesContext = () => React.useContext(MyContext)
 
 export const PropertiesProvider = ({ children }) => {
   const [properties, setProperties] = useState([])
+  const [isLoadingPropertie, setIsLoadingPropertie] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [propertieSelected, setPropertieSelected] = useState({})
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false)
+  const [dataPage, setDataPage] = useState([[]])
+  const [dataPerPage, setDataPerPage] = useState([])
+  const [propertiesPerPage, setPropertiesPerPage] = useState([])
+  const [rowsPerPage, setRowsPerPage] = useState(4)
+  const [page, setPage] = useState(0)
 
   const {
     onClose: onCloseModalCreate,
@@ -28,9 +34,35 @@ export const PropertiesProvider = ({ children }) => {
   useEffect(() => {
     propertiesApi
       .get()
-      .then((response) => setProperties(response.data))
+      .then((response) => {
+        setProperties(response.data)
+      })
       .finally(() => setIsLoading(false))
   }, [])
+
+  useEffect(() => {
+    setDataPage([[]])
+
+    properties.map((item, index) => {
+      if (index % rowsPerPage === 0 && index !== 0) {
+        console.log(index % rowsPerPage)
+        dataPage.push([])
+      }
+
+      dataPage[dataPage.length - 1].push(item)
+    })
+
+    console.log(dataPage, page)
+
+    if (dataPage[page]) {
+      setPropertiesPerPage(dataPage[page])
+    } else {
+      setPropertiesPerPage(dataPage[page - 1])
+      setPage(page - 1)
+    }
+
+    setDataPerPage(dataPage)
+  }, [isLoading, page, properties])
 
   return (
     <MyContext.Provider
@@ -48,6 +80,10 @@ export const PropertiesProvider = ({ children }) => {
         isOpenModalEdit,
         onOpenModalEdit,
         onCloseModalEdit,
+        propertiesPerPage,
+        page,
+        setPage,
+        dataPerPage,
       }}
     >
       {children}
