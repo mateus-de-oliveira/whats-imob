@@ -1,39 +1,65 @@
 import React from 'react'
 
+import { Stack, Flex, Text, Icon, Button } from '@chakra-ui/react'
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon,
-} from '@chakra-ui/icons'
+  MdFirstPage,
+  MdChevronLeft,
+  MdChevronRight,
+  MdLastPage,
+} from 'react-icons/md'
 
-import { Stack, Flex, Box, Text } from '@chakra-ui/react'
+import { usePropertiesContext } from '../Context'
 
 export function TablePaginationActions(props) {
+  const { page, setPage, dataPerPage, rowsPerPage } = usePropertiesContext()
+  console.log(dataPerPage)
   function handleFirstPageButtonClick(event) {
-    console.log('primeira página')
+    setPage(0)
   }
 
   function handleBackButtonClick(event) {
-    console.log('voltar página')
+    setPage(page - 1)
   }
 
   function handleNextButtonClick(event) {
-    console.log('próxima página')
+    setPage(page + 1)
   }
 
   function handleLastPageButtonClick(event) {
-    console.log('última página')
+    setPage(dataPerPage.length - 1)
   }
 
   return (
     <Flex justifyContent="flex-end">
-      <Stack spacing={2} direction="row">
-        <ChevronLeftIcon w="22px" h="22px" />
-        <Text as="u">1</Text>
-        <Text>2</Text>
-        <Text>3</Text>
-        <ChevronRightIcon w="22px" h="22px" />
+      <Stack direction="row" alignItems="center">
+        <Button
+          variant="ghost"
+          onClick={handleFirstPageButtonClick}
+          disabled={page === 0}
+        >
+          <Icon w={6} h={6} as={MdFirstPage} color="gray.600" />
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={handleBackButtonClick}
+          disabled={page === 0}
+        >
+          <Icon w={6} h={6} as={MdChevronLeft} color="gray.600" />
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={handleNextButtonClick}
+          disabled={page === dataPerPage.length - 1}
+        >
+          <Icon w={6} h={6} as={MdChevronRight} color="gray.600" />
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={handleLastPageButtonClick}
+          disabled={page === dataPerPage.length - 1}
+        >
+          <Icon w={6} h={6} as={MdLastPage} color="gray.600" />
+        </Button>
       </Stack>
     </Flex>
   )

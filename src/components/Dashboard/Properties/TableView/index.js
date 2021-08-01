@@ -23,11 +23,12 @@ import { usePropertiesContext } from '../Context'
 
 export default function TableView() {
   const {
-    properties,
+    page,
     onOpenModalCreate,
     onOpenModalEdit,
     setIsOpenModalDelete,
     setPropertieSelected,
+    propertiesPerPage,
   } = usePropertiesContext()
 
   return (
@@ -54,7 +55,7 @@ export default function TableView() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {properties.map((propertie) => {
+                  {propertiesPerPage.map((propertie) => {
                     return (
                       <Tr key={propertie.propertie_id}>
                         <Td>{propertie.name}</Td>
