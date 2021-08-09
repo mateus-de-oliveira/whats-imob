@@ -20,16 +20,18 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 
 import TablePaginationActions from './TablePaginationActions'
 import { usePropertiesContext } from '../Context'
+import { useWhatsappContext } from '../../Whatsapp/Context'
 
 export default function TableView() {
   const {
-    page,
     onOpenModalCreate,
     onOpenModalEdit,
     setIsOpenModalDelete,
     setPropertieSelected,
     propertiesPerPage,
   } = usePropertiesContext()
+
+  const { qrCode } = useWhatsappContext()
 
   return (
     <Container maxW="container.xl">
@@ -57,7 +59,7 @@ export default function TableView() {
                 <Tbody>
                   {propertiesPerPage.map((propertie) => {
                     return (
-                      <Tr key={propertie.propertie_id}>
+                      <Tr key={propertie.id}>
                         <Td>{propertie.name}</Td>
                         <Td>
                           {propertie.active === true ? (

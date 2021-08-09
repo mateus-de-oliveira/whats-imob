@@ -45,14 +45,11 @@ export const PropertiesProvider = ({ children }) => {
 
     properties.map((item, index) => {
       if (index % rowsPerPage === 0 && index !== 0) {
-        console.log(index % rowsPerPage)
         dataPage.push([])
       }
 
       dataPage[dataPage.length - 1].push(item)
     })
-
-    console.log(dataPage, page)
 
     if (dataPage[page]) {
       setPropertiesPerPage(dataPage[page])

@@ -1,10 +1,11 @@
 import { Flex } from '@chakra-ui/react'
+import { ev, create } from '@open-wa/wa-automate'
 
 import { Footer } from '../../components/Dashboard/Common/Footer'
 import { Header } from '../../components/Dashboard/Common/Header'
 import { App } from '../../components/Dashboard'
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   return (
     <Flex
       flexDirection="column"
@@ -17,4 +18,25 @@ export default function Dashboard() {
       <Footer />
     </Flex>
   )
+}
+
+export async function getServerSideProps() {
+  function start(client) {
+    console.log(client)
+  }
+  create({
+    qrTimeout: 0,
+  }).then(start)
+
+  ev.on('qr.**', async (qrcode) => {
+    const imageBuffer = Buffer.from(
+      qrcode.replace('data:image/png;base64,', ''),
+      'base64',
+    )
+    fs.writeFileSync('qr.png', imageBuffer)
+  })
+
+  let data = 'opa'
+
+  return { props: { data } }
 }

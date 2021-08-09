@@ -12,7 +12,7 @@ import { usePropertiesContext } from '../Context'
 
 export function TablePaginationActions(props) {
   const { page, setPage, dataPerPage, rowsPerPage } = usePropertiesContext()
-  console.log(dataPerPage)
+
   function handleFirstPageButtonClick(event) {
     setPage(0)
   }
