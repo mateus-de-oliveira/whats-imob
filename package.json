@@ -14,7 +14,6 @@
     "@chakra-ui/theme-tools": "^1.1.8",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@open-wa/wa-automate": "^4.12.3",
     "axios": "^0.21.1",
     "faunadb": "^4.3.0",
     "firebase": "^8.8.1",
