@@ -49,10 +49,10 @@ export default function ModalCreate() {
 
   const onSubmit = (data) =>
     propertiesApi
-      .put('', { propertie_id: propertieSelected.propertie_id, data })
+      .put('', { propertie_id: propertieSelected.id, data })
       .then((response) => {
         const updatePropertie = properties.map((propertie) => {
-          if (propertie.propertie_id === propertieSelected.propertie_id) {
+          if (propertie.id === propertieSelected.id) {
             propertie.name = data.name
             propertie.description = data.description
             propertie.active = data.active
@@ -77,8 +77,8 @@ export default function ModalCreate() {
       isOpen={isOpenModalEdit}
       onClose={onCloseModalEdit}
       initialFocusRef={initialRef}
-      size="xl"
-      id="modal-create"
+      size='xl'
+      id='modal-create'
     >
       <ModalOverlay />
       <ModalContent>
@@ -91,34 +91,34 @@ export default function ModalCreate() {
                 <FormLabel>Nome</FormLabel>
                 <Input
                   isInvalid={isEmpty(errors.name) ? false : true}
-                  errorBorderColor="red.500"
+                  errorBorderColor='red.500'
                   ref={initialRef}
-                  placeholder="Digite o nome do imóvel"
+                  placeholder='Digite o nome do imóvel'
                   {...register('name', { required: true })}
                 />
                 {errors.name && (
-                  <Box color="red.500">Esse campo é obrigatório!</Box>
+                  <Box color='red.500'>Esse campo é obrigatório!</Box>
                 )}
               </FormControl>
               <FormControl>
                 <FormLabel>Descrição</FormLabel>
                 <Textarea
-                  placeholder="Digite uma descrição para o imóvel"
+                  placeholder='Digite uma descrição para o imóvel'
                   {...register('description')}
                 />
               </FormControl>
-              <FormControl display="flex" alignItems="center">
-                <FormLabel htmlFor="active">Ativar imóvel?</FormLabel>
-                <Switch id="active" size="lg" {...register('active')} />
+              <FormControl display='flex' alignItems='center'>
+                <FormLabel htmlFor='active'>Ativar imóvel?</FormLabel>
+                <Switch id='active' size='lg' {...register('active')} />
               </FormControl>
             </Stack>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} type="submit">
+            <Button colorScheme='blue' mr={3} type='submit'>
               Adicionar
             </Button>
-            <Button variant="ghost" onClick={onCloseModalEdit}>
+            <Button variant='ghost' onClick={onCloseModalEdit}>
               Cancelar
             </Button>
           </ModalFooter>

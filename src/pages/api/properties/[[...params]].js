@@ -1,6 +1,7 @@
 import { q, client } from '../../../../config/database'
-import { db } from '../../../config/database'
 import firebase from 'firebase/app'
+
+import { db } from '../../../../config/database/'
 
 import { isEmpty } from 'lodash/fp'
 
@@ -8,16 +9,16 @@ const getAllProperties = () =>
   client.query(
     q.Map(
       q.Paginate(q.Documents(q.Collection('properties'))),
-      q.Lambda((x) => q.Get(x)),
-    ),
+      q.Lambda((x) => q.Get(x))
+    )
   )
 
 const getAllPropertiesByUsers = (id) => {
   return client.query(
     q.Map(
       q.Paginate(q.Match(q.Index('properties_by_user'), id)),
-      q.Lambda('x', q.Get(q.Var('x'))),
-    ),
+      q.Lambda('x', q.Get(q.Var('x')))
+    )
   )
 }
 
@@ -25,14 +26,14 @@ const createPropertie = (data) =>
   client.query(
     q.Create(q.Collection('properties'), {
       data,
-    }),
+    })
   )
 
 const updatePropertie = (id, data) => {
   return client.query(
     q.Update(q.Ref(q.Collection('properties'), id), {
       data,
-    }),
+    })
   )
 }
 
@@ -42,34 +43,48 @@ const deletePropertie = (id) => {
 
 export default function Users(req, res) {
   if (req.method === 'GET') {
+    // console.log(data)
     db.collection('properties')
       .get()
       .then((snapshot) => {
         res.status(200).json(
           snapshot.docs.map((doc) => {
             let { created_at, ...data } = doc.data()
-
-            return { id: doc.id, created_at: created_at.toDate(), ...data }
-          }),
+            new firebase.firestore.Timestamp(
+              created_at.seconds,
+              created_at.nanoseconds
+            ).toDate()
+            // console.log(
+            //   new firebase.firestore.Timestamp(
+            //     created_at.seconds,
+            //     created_at.nanoseconds
+            //   ).toDate()
+            // )
+            return {
+              id: doc.id,
+              created_at,
+              ...data,
+            }
+          })
         )
       })
   } else if (req.method === 'POST') {
-    createPropertie(req.body)
-      .then((response) => {
-        const data = {
-          propertie_id: response.ref.id,
-          name: response.data.name,
-          description: response.data.description,
-          active: response.data.active,
-          message: 'Imóvel adicionado com sucesso!',
-        }
-        res.status(200).json({ ...data })
-      })
-      .catch((error) => res.status(500).json({ error }))
+    // createPropertie(req.body)
+    //   .then((response) => {
+    //     const data = {
+    //       propertie_id: response.ref.id,
+    //       name: response.data.name,
+    //       description: response.data.description,
+    //       active: response.data.active,
+    //       message: 'Imóvel adicionado com sucesso!',
+    //     }
+    //     res.status(200).json({ ...data })
+    //   })
+    //   .catch((error) => res.status(500).json({ error }))
 
     const { name, description, active } = req.body
 
-    db.collection('propertie')
+    db.collection('properties')
       .add({
         name,
         description,
@@ -78,7 +93,11 @@ export default function Users(req, res) {
       })
       .then((docRef) => {
         docRef.get().then((doc) => {
-          res.status(200).json({ id: doc.id, ...doc.data() })
+          res.status(200).json({
+            id: doc.id,
+            ...doc.data(),
+            message: 'Imóvel adicionado com sucesso!',
+          })
         })
       })
       .catch((error) => {
@@ -87,18 +106,43 @@ export default function Users(req, res) {
   } else if (req.method === 'PUT') {
     const { propertie_id, data } = req.body
 
-    updatePropertie(propertie_id, data)
-      .then(() => {
-        res.status(200).json({ message: 'Imóvel atualizado com sucesso!' })
+    // updatePropertie(propertie_id, data)
+    //   .then(() => {
+    //     res.status(200).json({ message: 'Imóvel atualizado com sucesso!' })
+    //   })
+    //   .catch((error) => res.status(500).json({ error }))
+
+    db.collection('properties')
+      .doc(propertie_id)
+      .update({
+        ...data,
       })
-      .catch((error) => res.status(500).json({ error }))
+      .then(() => {
+        res.status(200).json({
+          message: 'Imóvel atualizado com sucesso!',
+        })
+      })
+      .catch((error) => {
+        console.error('Error adding document: ', error)
+      })
   } else if (req.method === 'DELETE') {
     const { propertie_id } = req.body
+    console.log(propertie_id)
 
-    deletePropertie(propertie_id)
+    // deletePropertie(propertie_id)
+    //   .then(() => {
+    //     res.status(200).json({ message: 'Imóvel excluído com sucesso!' })
+    //   })
+    //   .catch((error) => res.status(500).json({ error }))
+
+    db.collection('properties')
+      .doc(propertie_id)
+      .delete()
       .then(() => {
         res.status(200).json({ message: 'Imóvel excluído com sucesso!' })
       })
-      .catch((error) => res.status(500).json({ error }))
+      .catch((error) => {
+        console.error('Error removing document: ', error)
+      })
   }
 }

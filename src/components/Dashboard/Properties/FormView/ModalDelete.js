@@ -32,7 +32,7 @@ export default function ModalDelete() {
       })
       .then((response) => {
         const newProperties = properties.filter(
-          (propertie) => propertie.propertie_id !== id,
+          (propertie) => propertie.id !== id
         )
         setProperties(newProperties)
 
@@ -54,7 +54,7 @@ export default function ModalDelete() {
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+          <AlertDialogHeader fontSize='lg' fontWeight='bold'>
             Deletar imóvel
           </AlertDialogHeader>
 
@@ -67,9 +67,9 @@ export default function ModalDelete() {
               Cancelar
             </Button>
             <Button
-              colorScheme="red"
+              colorScheme='red'
               onClick={() => {
-                handleDeletePropertie(propertieSelected.propertie_id)
+                handleDeletePropertie(propertieSelected.id)
                 onCloseModalDelete()
               }}
               ml={3}

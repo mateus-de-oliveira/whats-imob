@@ -35,6 +35,7 @@ export const PropertiesProvider = ({ children }) => {
     propertiesApi
       .get()
       .then((response) => {
+        console.log(response)
         setProperties(response.data)
       })
       .finally(() => setIsLoading(false))
