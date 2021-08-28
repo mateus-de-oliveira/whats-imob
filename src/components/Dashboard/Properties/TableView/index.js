@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   Divider,
@@ -15,12 +15,17 @@ import {
   Badge,
   Center,
   Stack,
+  Text,
+  Spinner,
 } from '@chakra-ui/react'
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 
 import TablePaginationActions from './TablePaginationActions'
 import { usePropertiesContext } from '../Context'
 import { useWhatsappContext } from '../../Whatsapp/Context'
+import whatsappApi from '../../Services/Api/whatsapp'
+
+import { isEmpty } from 'lodash/fp'
 
 export default function TableView() {
   const {
@@ -31,8 +36,9 @@ export default function TableView() {
     propertiesPerPage,
   } = usePropertiesContext()
 
-  const { qrCode } = useWhatsappContext()
-  console.log(qrCode)
+  const { qrCode, whatsUser, isLoading, setIsLoading, isLoadingWhatsappInfo } =
+    useWhatsappContext()
+
   return (
     <Container maxW='container.xl'>
       <Flex alignItems='center'>
@@ -58,7 +64,6 @@ export default function TableView() {
                 </Thead>
                 <Tbody>
                   {propertiesPerPage.map((propertie) => {
-                    console.log(propertie)
                     return (
                       <Tr key={propertie.id}>
                         <Td>{propertie.name}</Td>
@@ -109,9 +114,65 @@ export default function TableView() {
         <Center ml='30px' mr='30px'>
           <Divider orientation='vertical' height='60vh' />
         </Center>
-        <Center flex='1 1 0'>
-          <Image objectFit='cover' src={qrCode} />
-        </Center>
+
+        {!isEmpty(whatsUser) ? (
+          <Center flex='1 1 0'>
+            <Stack spacing={4} direction='column' align='center'>
+              <Image
+                boxSize='150px'
+                borderRadius='full'
+                src={whatsUser.imageProfile}
+                alt={whatsUser.name}
+              />
+
+              <Text>{whatsUser.name}</Text>
+              <Text>{whatsUser.user}</Text>
+              <Button
+                isLoading={isLoading}
+                loadingText='Desconectando'
+                colorScheme='teal'
+                variant={isLoading ? 'outline' : 'solid'}
+                size='md'
+                onClick={() => {
+                  setIsLoading(true)
+                  whatsappApi.get('/logout')
+                }}
+              >
+                DESCONECTAR
+              </Button>
+            </Stack>
+          </Center>
+        ) : isEmpty(qrCode) ? (
+          <Center flex='1 1 0'>
+            <Stack direction='column' spacing={4} alignItems='center'>
+              <Spinner
+                thickness='4px'
+                speed='0.65s'
+                emptyColor='gray.200'
+                color='green.400'
+                size='xl'
+              />
+              <Text>Carregando QR CODE...</Text>
+            </Stack>
+          </Center>
+        ) : !isLoadingWhatsappInfo ? (
+          <Center flex='1 1 0'>
+            <Image objectFit='cover' src={qrCode} />
+          </Center>
+        ) : (
+          <Center flex='1 1 0'>
+            <Stack direction='column' spacing={4} alignItems='center'>
+              <Spinner
+                thickness='4px'
+                speed='0.65s'
+                emptyColor='gray.200'
+                color='green.400'
+                size='xl'
+              />
+              <Text>Carregando informações...</Text>
+            </Stack>
+          </Center>
+        )}
       </Flex>
     </Container>
   )

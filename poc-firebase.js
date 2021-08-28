@@ -11,7 +11,7 @@ export default function handler(req, res) {
             let { created_at, ...data } = doc.data()
 
             return { id: doc.id, created_at: created_at.toDate(), ...data }
-          }),
+          })
         )
       })
   }
@@ -36,7 +36,6 @@ export default function handler(req, res) {
 
   if (req.method === 'PUT') {
     const { id, ...data } = req.body
-    console.log(data)
     db.collection('users')
       .doc(id)
       .update(data)

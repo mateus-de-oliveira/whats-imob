@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Spinner, Text, Center, Stack } from '@chakra-ui/react'
 
@@ -8,20 +8,25 @@ import ModalCreate from './Properties/FormView/ModalCreate'
 import ModalDelete from './Properties/FormView/ModalDelete'
 import ModalEdit from './Properties/FormView/ModalEdit'
 import Properties from './Properties'
+import whatsappApi from './Services/Api/whatsapp'
 
 export function App() {
   const { isLoading } = usePropertiesContext()
 
+  useEffect(async () => {
+    await whatsappApi.get('/qr')
+  }, [])
+
   if (isLoading) {
     return (
       <Center>
-        <Stack direction="column" spacing={4} alignItems="center">
+        <Stack direction='column' spacing={4} alignItems='center'>
           <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="green.400"
-            size="xl"
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='green.400'
+            size='xl'
           />
           <Text>Carregando informações...</Text>
         </Stack>

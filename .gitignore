@@ -29,3 +29,5 @@ yarn-error.log*
 **.data.json
 **.node-persist**
 # end managed by open-wa
+
+/logs/

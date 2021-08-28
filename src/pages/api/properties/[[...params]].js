@@ -127,8 +127,6 @@ export default function Users(req, res) {
       })
   } else if (req.method === 'DELETE') {
     const { propertie_id } = req.body
-    console.log(propertie_id)
-
     // deletePropertie(propertie_id)
     //   .then(() => {
     //     res.status(200).json({ message: 'Imóvel excluído com sucesso!' })
