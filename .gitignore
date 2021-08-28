@@ -30,4 +30,4 @@ yarn-error.log*
 **.node-persist**
 # end managed by open-wa
 
-/logs/
+/logs
